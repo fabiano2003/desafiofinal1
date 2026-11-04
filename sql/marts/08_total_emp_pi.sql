@@ -1,0 +1,17 @@
+-- Total empenhado por Plano Interno no ano corrente.
+-- O grão é uma linha por PI, somando as duas UG de 2026.
+
+SELECT
+    PLANO_INTERNO,
+    SUM(SALDO_NE + EM_LIQUIDACAO + LIQUIDADO + PAGO) AS TOTAL_EMPENHADO
+FROM (
+    SELECT PLANO_INTERNO, SALDO_NE, EM_LIQUIDACAO, LIQUIDADO, PAGO
+    FROM refined.empenhos_2026_prim
+
+    UNION ALL
+
+    SELECT PLANO_INTERNO, SALDO_NE, EM_LIQUIDACAO, LIQUIDADO, PAGO
+    FROM refined.empenhos_2026_sec
+) AS empenhos_2026
+GROUP BY PLANO_INTERNO
+ORDER BY PLANO_INTERNO;
